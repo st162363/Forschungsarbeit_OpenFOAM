@@ -1,0 +1,49 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      omega;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 -1 0 0 0 0];
+
+internalField   uniform 15.644;			
+
+boundaryField
+{
+    movingWall
+    {
+        type            omegaWallFunction;	// Wandfunktion an der bewegten Wand oder fixedValue
+        value           uniform 7986;		// Initialwert fuer Stabilitaet oder Wert fuer fixedValue-Bedingung -
+    }						// CP1/CP3:7986
+    fixedWall
+    {
+        type            omegaWallFunction;	// Wandfunktion an der stationaeren Wand oder fixedValue
+        value           uniform 7986;		// Initialwert fuer Stabilitaet oder Wert fuer fixedValue-Bedingung -
+    }						// CP1/CP3:7986
+    inlet
+    {
+        type            zeroGradient;		// zeroGradient oder fixedValue 
+    //	value		uniform 15.644;		// Wert fuer fixedValue-Bedingung - CP1:10.007; CP3:15.644
+    }
+    outlet
+    {
+        type            zeroGradient;		// zeroGradient gewaehlt
+    }
+    frontAndBack
+    {
+        type            empty;			// 2D-Bedingung fuer z-Richtung
+    }
+}
+
+
+// ************************************************************************* //

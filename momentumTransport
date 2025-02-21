@@ -1,0 +1,30 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      momentumTransport;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+simulationType  RAS;	// RANS-Simulation zur Berechnung mittlerer Stroemungsgroessen
+			// (laminar fuer laminare Berechnung)
+RAS
+{
+    model           LaunderSharmaKE;	// Modellwahl fuer RANS: kEpsilon; kOmegaSST;
+					// LaunderSharmaKE;
+    turbulence      on;		// Aktiviert die Turbulenzberechnung
+
+    printCoeffs     on;		// Gibt die Turbulenzmodellkoeffizienten in der Ausgabe an
+    
+    viscosityModel  Newtonian;	// Setzt Newtonisches Viskositaetsmodell 
+}
+
+// ************************************************************************* //

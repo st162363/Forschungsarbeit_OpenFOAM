@@ -1,0 +1,65 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     foamRun; // Standart fuer diese Version von OpenFOAM
+			// (simpleFoam wird nicht mehr verwendet)
+solver          incompressibleFluid;	// Simulationstyp
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         45000;	// Simulationsdauer (fuer steadyState gleich Iterationsanzahl)
+			
+deltaT          1;	// Zeitschrittgroesse (fuer steadyState kann deltaT=1 gesetzt werden)
+			
+writeControl    timeStep;
+
+writeInterval   3000;	// Speicherintervall der Zeitschritte
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable true;
+
+functions				// Funktionseintraege
+{
+
+	#includeFunc yPlus		// Berechnet den y+-Wert
+	
+	#includeFunc wallShearStress	// Wandschubspannung zur Analyse von Grenzschicht-Effekten
+
+	#includeFunc fieldAverage(U, p, prime2Mean = yes)
+    
+    	#includeFunc mag(UPrime2Mean)
+   
+ 	#includeFunc multiply(half, mag(UPrime2Mean), result = k)
+   
+}
+
+
+// ************************************************************************* //

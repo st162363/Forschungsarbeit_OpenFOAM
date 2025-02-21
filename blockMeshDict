@@ -1,0 +1,92 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  11
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;	// Objektname
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 0.1;	// Skalierung: definiert 1 Einheit in BlockMesh als 0.1 m
+
+vertices		// Eckpunkte (x y z)
+(			// x:Kanallaenge; y:Kanalhoehe; z:Kanaltiefe
+    (0 0 0)
+    (5 0 0)
+    (0 0 0.1)
+    (5 0 0.1)
+    (0 0.5 0)     	// Mitte des Kanals
+    (5 0.5 0)
+    (0 0.5 0.1)
+    (5 0.5 0.1)
+    (0 1 0)
+    (5 1 0)
+    (0 1 0.1)
+    (5 1 0.1)
+);
+
+blocks			// Bloecke
+(
+// Unterer Bereich (Eckpunkte) (Anzahl Zellen) Verfeinerung (x y z)
+    hex (0 1 5 4 2 3 7 6) (200 40 1) simpleGrading (1 10 1)
+// Oberer Bereich (Eckpunkte) (Anzahl Zellen) Verfeinerung (x y z)
+    hex (4 5 9 8 6 7 11 10) (200 40 1) simpleGrading (1 0.1 1)
+);
+
+boundary			// Grenzflaechen (Eckpunkte)
+(
+    movingWall
+    {
+        type wall;
+        faces
+        (
+        (8 10 11 9)		// obere, bewegte Wand
+        );
+    }
+    fixedWall
+    {
+        type wall;
+        faces
+        (
+            (1 3 2 0)		// untere, feste Wand
+        );
+    }
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (0 2 6 4)    	// Kanal-Einlass / Seitenwand links
+            (4 6 10 8)         
+        );
+    }
+    outlet
+    {
+        type patch;
+        faces
+        (     
+            (5 7 3 1)    	// Kanal-Auslass / Seitenwand rechts
+            (9 11 7 5)    
+        );
+    }
+    frontAndBack
+    {
+        type empty;		// Fuer eine 2D-Annaeherung in z-Richtung
+        faces
+        (
+            (0 4 5 1)  		// hintere Wand
+            (4 8 9 5)
+            (2 3 7 6)  		// vordere Wand
+            (6 7 11 10)
+        );
+    }
+);
+
+
+// ************************************************************************* //
